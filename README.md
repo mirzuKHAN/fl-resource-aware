@@ -71,6 +71,35 @@ source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
 pip install -e .
 ```
 
+### One-command setup for fresh Ubuntu
+
+For a new Ubuntu machine, use:
+
+```bash
+chmod +x scripts/setup_ubuntu_fl.sh scripts/run_and_compare.sh
+./scripts/setup_ubuntu_fl.sh
+```
+
+This script will:
+- Install required system packages (`python3`, `python3-venv`, `python3-pip`, compiler tools)
+- Create a virtual environment at `.venv`
+- Install all Python dependencies from both `pyproject.toml` files (main + baseline)
+
+### Automated run and comparison (improved_version vs baseline)
+
+After setup, run:
+
+```bash
+source .venv/bin/activate
+./scripts/run_and_compare.sh --rounds 5
+```
+
+This automation script will:
+- Run Flower simulation for this project
+- Run Flower simulation for `baseline/`
+- Find the newest `results.json` from each run
+- Call `scripts/compare_results.py` and generate reports under `comparison_runs/<timestamp>/`
+
 ---
 
 ## 🏃 Running the Simulation

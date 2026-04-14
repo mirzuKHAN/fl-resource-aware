@@ -4,3 +4,9 @@ wandb/
 .venv
 final_model.pt
 .env
+
+# Keep comparison summary reports only, ignore transient run artifacts
+comparison_runs/**
+!comparison_runs/**/
+!comparison_runs/**/comparison_report.txt
+!comparison_runs/**/comparison_report.json
