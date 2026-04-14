@@ -1,0 +1,6 @@
+__pycache__/
+outputs/
+wandb/
+.venv
+final_model.pt
+.env
