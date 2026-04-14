@@ -1,0 +1,52 @@
+{
+  "improved_version": {
+    "name": "improved_version",
+    "rounds": 5,
+    "final_accuracy": 0.7252,
+    "final_loss": 0.6914672933447475,
+    "best_accuracy": 0.7252,
+    "best_accuracy_round": 5,
+    "lowest_loss": 0.6914672933447475,
+    "lowest_loss_round": 5,
+    "mean_accuracy": 0.64774
+  },
+  "baseline": {
+    "name": "baseline",
+    "rounds": 5,
+    "final_accuracy": 0.6662,
+    "final_loss": 0.7927312728124686,
+    "best_accuracy": 0.6662,
+    "best_accuracy_round": 5,
+    "lowest_loss": 0.7927312728124686,
+    "lowest_loss_round": 5,
+    "mean_accuracy": 0.5163599999999999
+  },
+  "common_rounds": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "delta": {
+    "final_accuracy": 0.05899999999999994,
+    "final_loss": -0.10126397946772103,
+    "mean_accuracy": 0.13138000000000005
+  },
+  "winner": {
+    "by_category": {
+      "final_accuracy": "improved_version",
+      "final_loss": "improved_version",
+      "best_accuracy": "improved_version",
+      "lowest_loss": "improved_version",
+      "mean_accuracy": "improved_version"
+    },
+    "score": {
+      "improved_version": 5,
+      "baseline": 0,
+      "tie": 0,
+      "n/a": 0
+    },
+    "overall": "improved_version"
+  }
+}

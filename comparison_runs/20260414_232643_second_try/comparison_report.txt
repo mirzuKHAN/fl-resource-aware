@@ -1,0 +1,29 @@
+=== Flower Results Comparison (Server Metrics) ===
+
+Summary
+- Rounds observed (improved_version): 5
+- Rounds observed (baseline): 5
+
+Key metrics
+- Final accuracy: improved_version=0.7252 | baseline=0.6662 | delta=0.0590
+- Final loss: improved_version=0.6915 | baseline=0.7927 | delta=-0.1013
+- Best accuracy: improved_version=0.7252 (round 5) | baseline=0.6662 (round 5)
+- Lowest loss: improved_version=0.6915 (round 5) | baseline=0.7927 (round 5)
+- Mean accuracy: improved_version=0.6477 | baseline=0.5164 | delta=0.1314
+
+Winners
+- Final accuracy winner: improved_version
+- Final loss winner: improved_version
+- Best accuracy winner: improved_version
+- Lowest loss winner: improved_version
+- Mean accuracy winner: improved_version
+- Total score: improved_version=5 | baseline=0 | tie=0 | n/a=0
+- Overall winner: improved_version
+
+Per-round deltas (improved_version - baseline)
+- round | acc_delta | loss_delta
+- 1 | 0.3072 | -1.0327
+- 2 | 0.0999 | -0.5160
+- 3 | 0.0668 | -0.2180
+- 4 | 0.1240 | -0.4659
+- 5 | 0.0590 | -0.1013
