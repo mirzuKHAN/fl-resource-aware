@@ -91,7 +91,7 @@ After setup, run:
 
 ```bash
 source .venv/bin/activate
-./scripts/run_and_compare.sh --rounds 5
+./scripts/run_and_compare.sh --rounds 10
 ```
 
 This automation script will:
