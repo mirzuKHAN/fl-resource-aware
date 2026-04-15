@@ -1,0 +1,62 @@
+{
+  "generated_at": "2026-04-15T12:39:26+08:00",
+  "improved_version": {
+    "name": "improved_version",
+    "rounds": 10,
+    "final_accuracy": 0.7329,
+    "final_loss": 0.6657614935510836,
+    "best_accuracy": 0.7329,
+    "best_accuracy_round": 10,
+    "lowest_loss": 0.662849029889122,
+    "lowest_loss_round": 9,
+    "mean_accuracy": 0.68458
+  },
+  "baseline": {
+    "name": "baseline",
+    "rounds": 10,
+    "final_accuracy": 0.7216,
+    "final_loss": 0.7465622151812045,
+    "best_accuracy": 0.7543,
+    "best_accuracy_round": 7,
+    "lowest_loss": 0.6329656822232012,
+    "lowest_loss_round": 8,
+    "mean_accuracy": 0.6513199999999999
+  },
+  "common_rounds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "delta": {
+    "final_accuracy": 0.011299999999999977,
+    "final_loss": -0.08080072163012086,
+    "mean_accuracy": 0.03326000000000007
+  },
+  "winner": {
+    "by_category": {
+      "final_accuracy": "improved_version",
+      "final_loss": "improved_version",
+      "best_accuracy": "baseline",
+      "lowest_loss": "baseline",
+      "mean_accuracy": "improved_version"
+    },
+    "score": {
+      "improved_version": 3,
+      "baseline": 2,
+      "tie": 0,
+      "n/a": 0
+    },
+    "overall": "improved_version"
+  },
+  "plots": {
+    "accuracy": "comparison_accuracy.png",
+    "loss": "comparison_loss.png"
+  }
+}

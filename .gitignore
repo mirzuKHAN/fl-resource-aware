@@ -10,3 +10,5 @@ comparison_runs/**
 !comparison_runs/**/
 !comparison_runs/**/comparison_report.md
 !comparison_runs/**/comparison_report.json
+!comparison_runs/**/comparison_accuracy.png
+!comparison_runs/**/comparison_loss.png

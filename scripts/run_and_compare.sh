@@ -66,6 +66,11 @@ if ! command -v flwr >/dev/null 2>&1; then
   source "${VENV_DIR}/bin/activate"
 fi
 
+if ! python -c "import matplotlib" >/dev/null 2>&1; then
+  echo "'matplotlib' not found. Installing plotting dependency..."
+  python -m pip install --no-cache-dir "matplotlib>=3.8.0"
+fi
+
 stamp="$(date +"%Y%m%d_%H%M%S")"
 if [[ -n "${RUN_NAME}" ]]; then
   out_dir="${REPO_ROOT}/comparison_runs/${stamp}_${RUN_NAME}"
@@ -134,10 +139,13 @@ cp "${BASELINE_RESULTS}" "${out_dir}/baseline_results.json"
 
 REPORT_JSON="${out_dir}/comparison_report.json"
 REPORT_MD="${out_dir}/comparison_report.md"
+REPORT_PLOT_ACCURACY="${out_dir}/comparison_accuracy.png"
+REPORT_PLOT_LOSS="${out_dir}/comparison_loss.png"
 
 python "${REPO_ROOT}/scripts/compare_results.py" \
   --improved-version "${IMPROVED_RESULTS}" \
   --baseline "${BASELINE_RESULTS}" \
+  --plot-dir "${out_dir}" \
   --report-json "${REPORT_JSON}" | tee "${REPORT_MD}"
 
 cat <<EOF
@@ -149,4 +157,6 @@ Done.
 - Copied baseline results: ${out_dir}/baseline_results.json
 - Comparison Markdown report: ${REPORT_MD}
 - Comparison JSON report: ${REPORT_JSON}
+- Accuracy plot: ${REPORT_PLOT_ACCURACY}
+- Loss plot: ${REPORT_PLOT_LOSS}
 EOF

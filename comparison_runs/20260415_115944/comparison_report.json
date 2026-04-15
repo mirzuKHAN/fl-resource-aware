@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-04-15T12:21:55+08:00",
+  "generated_at": "2026-04-15T12:35:40+08:00",
   "improved_version": {
     "name": "improved_version",
     "rounds": 10,
@@ -54,5 +54,9 @@
       "n/a": 0
     },
     "overall": "improved_version"
+  },
+  "plots": {
+    "accuracy": "comparison_accuracy.png",
+    "loss": "comparison_loss.png"
   }
 }

@@ -1,7 +1,7 @@
 # Flower Results Comparison (Server Metrics)
 
 ## Summary
-- Generated at: 2026-04-15T12:21:55+08:00
+- Generated at: 2026-04-15T12:35:40+08:00
 - Rounds observed (improved_version): 10
 - Rounds observed (baseline): 10
 
@@ -23,6 +23,20 @@
 - Total score: improved_version=5 | baseline=0 | tie=0 | n/a=0
 - Overall winner: improved_version
 
+## Per-round Metrics
+| Round | improved_version Accuracy | baseline Accuracy | improved_version Loss | baseline Loss |
+|---:|---:|---:|---:|---:|
+| 1 | 0.5376 | 0.2400 | 1.1805 | 2.1470 |
+| 2 | 0.6246 | 0.3313 | 0.9146 | 1.5843 |
+| 3 | 0.6889 | 0.6332 | 0.8016 | 1.0465 |
+| 4 | 0.7000 | 0.6490 | 0.7941 | 0.9044 |
+| 5 | 0.7326 | 0.6850 | 0.6965 | 0.8152 |
+| 6 | 0.7503 | 0.6571 | 0.6480 | 0.9135 |
+| 7 | 0.7499 | 0.7004 | 0.6555 | 0.7266 |
+| 8 | 0.7456 | 0.7154 | 0.6427 | 0.7313 |
+| 9 | 0.7464 | 0.6741 | 0.6473 | 0.8255 |
+| 10 | 0.7619 | 0.6863 | 0.6167 | 0.7759 |
+
 ## Per-round Deltas (improved_version - baseline)
 | Round | Accuracy Delta | Loss Delta |
 |---:|---:|---:|
@@ -36,3 +50,10 @@
 | 8 | 0.0302 | -0.0887 |
 | 9 | 0.0723 | -0.1782 |
 | 10 | 0.0756 | -0.1591 |
+
+## Plots
+### Accuracy
+![Accuracy by round](comparison_accuracy.png)
+
+### Loss
+![Loss by round](comparison_loss.png)

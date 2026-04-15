@@ -16,6 +16,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
 
 @dataclass
 class VariantStats:
@@ -147,13 +152,105 @@ def _fmt_with_round(value: float | None, round_no: int | None) -> str:
     return f"{_fmt(value)} (r{round_no})"
 
 
+def _series_for_metric(
+    round_map: dict[int, dict[str, float | None]], metric: str
+) -> tuple[list[int], list[float]]:
+    xs: list[int] = []
+    ys: list[float] = []
+    for r in sorted(round_map):
+        val = round_map[r].get(metric)
+        if val is None:
+            continue
+        xs.append(r)
+        ys.append(val)
+    return xs, ys
+
+
+def _plot_metric(
+    improved_x: list[int],
+    improved_y: list[float],
+    baseline_x: list[int],
+    baseline_y: list[float],
+    ylabel: str,
+    title: str,
+    out_path: Path,
+) -> None:
+    fig = plt.figure(figsize=(8.5, 4.8))
+    ax = fig.add_subplot(1, 1, 1)
+
+    if improved_x and improved_y:
+        ax.plot(
+            improved_x,
+            improved_y,
+            marker="o",
+            linewidth=2,
+            label="improved_version",
+        )
+    if baseline_x and baseline_y:
+        ax.plot(
+            baseline_x,
+            baseline_y,
+            marker="s",
+            linewidth=2,
+            label="baseline",
+        )
+
+    ax.set_title(title)
+    ax.set_xlabel("Round")
+    ax.set_ylabel(ylabel)
+    ax.grid(True, alpha=0.3)
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig(out_path, dpi=150)
+    plt.close(fig)
+
+
 def build_report(
     improved_rows: list[dict[str, Any]],
     baseline_rows: list[dict[str, Any]],
     generated_at: str,
+    plot_dir: Path | None = None,
 ) -> tuple[str, dict[str, Any]]:
     improved = summarize("improved_version", improved_rows)
     base = summarize("baseline", baseline_rows)
+    improved_map = _round_map(improved_rows)
+    base_map = _round_map(baseline_rows)
+    common_rounds = sorted(set(improved_map).intersection(base_map))
+
+    plot_paths: dict[str, str] = {}
+    if plot_dir is not None:
+        plot_dir.mkdir(parents=True, exist_ok=True)
+        improved_acc_x, improved_acc_y = _series_for_metric(improved_map, "accuracy")
+        baseline_acc_x, baseline_acc_y = _series_for_metric(base_map, "accuracy")
+        improved_loss_x, improved_loss_y = _series_for_metric(improved_map, "loss")
+        baseline_loss_x, baseline_loss_y = _series_for_metric(base_map, "loss")
+
+        accuracy_plot = plot_dir / "comparison_accuracy.png"
+        loss_plot = plot_dir / "comparison_loss.png"
+
+        _plot_metric(
+            improved_acc_x,
+            improved_acc_y,
+            baseline_acc_x,
+            baseline_acc_y,
+            ylabel="Accuracy",
+            title="Accuracy by Round",
+            out_path=accuracy_plot,
+        )
+        _plot_metric(
+            improved_loss_x,
+            improved_loss_y,
+            baseline_loss_x,
+            baseline_loss_y,
+            ylabel="Loss",
+            title="Loss by Round",
+            out_path=loss_plot,
+        )
+
+        plot_paths = {
+            "accuracy": accuracy_plot.name,
+            "loss": loss_plot.name,
+        }
 
     lines: list[str] = []
     lines.append("# Flower Results Comparison (Server Metrics)")
@@ -224,9 +321,20 @@ def build_report(
     )
     lines.append(f"- Overall winner: {overall_winner}")
 
-    improved_map = _round_map(improved_rows)
-    base_map = _round_map(baseline_rows)
-    common_rounds = sorted(set(improved_map).intersection(base_map))
+    lines.append("")
+    lines.append("## Per-round Metrics")
+    all_rounds = sorted(set(improved_map).union(base_map))
+    if not all_rounds:
+        lines.append("- No rounds found")
+    else:
+        lines.append("| Round | improved_version Accuracy | baseline Accuracy | improved_version Loss | baseline Loss |")
+        lines.append("|---:|---:|---:|---:|---:|")
+        for r in all_rounds:
+            lines.append(
+                "| "
+                f"{r} | {_fmt(improved_map.get(r, {}).get('accuracy'))} | {_fmt(base_map.get(r, {}).get('accuracy'))} | "
+                f"{_fmt(improved_map.get(r, {}).get('loss'))} | {_fmt(base_map.get(r, {}).get('loss'))} |"
+            )
 
     lines.append("")
     lines.append("## Per-round Deltas (improved_version - baseline)")
@@ -239,6 +347,15 @@ def build_report(
             acc_d = _delta(improved_map[r]["accuracy"], base_map[r]["accuracy"])
             loss_d = _delta(improved_map[r]["loss"], base_map[r]["loss"])
             lines.append(f"| {r} | {_fmt(acc_d)} | {_fmt(loss_d)} |")
+
+    if plot_paths:
+        lines.append("")
+        lines.append("## Plots")
+        lines.append("### Accuracy")
+        lines.append(f"![Accuracy by round]({plot_paths['accuracy']})")
+        lines.append("")
+        lines.append("### Loss")
+        lines.append(f"![Loss by round]({plot_paths['loss']})")
 
     report = {
         "generated_at": generated_at,
@@ -260,6 +377,7 @@ def build_report(
             },
             "overall": overall_winner,
         },
+        "plots": plot_paths,
     }
     return "\n".join(lines), report
 
@@ -283,6 +401,11 @@ def main() -> None:
         default="",
         help="Optional path to save machine-readable JSON report",
     )
+    parser.add_argument(
+        "--plot-dir",
+        default="",
+        help="Optional directory to save PNG plots",
+    )
     args = parser.parse_args()
 
     improved_path_input = args.improved_version or args.ours
@@ -296,7 +419,13 @@ def main() -> None:
     baseline_rows = _load_json(baseline_path)
 
     generated_at = datetime.now().astimezone().isoformat(timespec="seconds")
-    report_txt, report_obj = build_report(improved_rows, baseline_rows, generated_at)
+    plot_dir = Path(args.plot_dir).expanduser().resolve() if args.plot_dir else None
+    report_txt, report_obj = build_report(
+        improved_rows,
+        baseline_rows,
+        generated_at,
+        plot_dir=plot_dir,
+    )
     print(report_txt)
 
     if args.report_json:
