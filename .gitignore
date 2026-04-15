@@ -8,5 +8,5 @@ final_model.pt
 # Keep comparison summary reports only, ignore transient run artifacts
 comparison_runs/**
 !comparison_runs/**/
-!comparison_runs/**/comparison_report.txt
+!comparison_runs/**/comparison_report.md
 !comparison_runs/**/comparison_report.json

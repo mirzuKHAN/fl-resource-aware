@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from datetime import datetime
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -138,35 +139,47 @@ def _round_map(rows: list[dict[str, Any]]) -> dict[int, dict[str, float | None]]
     return out
 
 
+def _fmt_with_round(value: float | None, round_no: int | None) -> str:
+    if value is None:
+        return "n/a"
+    if round_no is None:
+        return _fmt(value)
+    return f"{_fmt(value)} (r{round_no})"
+
+
 def build_report(
     improved_rows: list[dict[str, Any]],
     baseline_rows: list[dict[str, Any]],
+    generated_at: str,
 ) -> tuple[str, dict[str, Any]]:
     improved = summarize("improved_version", improved_rows)
     base = summarize("baseline", baseline_rows)
 
     lines: list[str] = []
-    lines.append("=== Flower Results Comparison (Server Metrics) ===")
+    lines.append("# Flower Results Comparison (Server Metrics)")
     lines.append("")
-    lines.append("Summary")
+    lines.append("## Summary")
+    lines.append(f"- Generated at: {generated_at}")
     lines.append(f"- Rounds observed (improved_version): {improved.rounds}")
     lines.append(f"- Rounds observed (baseline): {base.rounds}")
     lines.append("")
-    lines.append("Key metrics")
+    lines.append("## Key Metrics")
+    lines.append("| Metric | improved_version | baseline | Delta (improved_version - baseline) |")
+    lines.append("|---|---:|---:|---:|")
     lines.append(
-        f"- Final accuracy: improved_version={_fmt(improved.final_accuracy)} | baseline={_fmt(base.final_accuracy)} | delta={_fmt(_delta(improved.final_accuracy, base.final_accuracy))}"
+        f"| Final accuracy | {_fmt(improved.final_accuracy)} | {_fmt(base.final_accuracy)} | {_fmt(_delta(improved.final_accuracy, base.final_accuracy))} |"
     )
     lines.append(
-        f"- Final loss: improved_version={_fmt(improved.final_loss)} | baseline={_fmt(base.final_loss)} | delta={_fmt(_delta(improved.final_loss, base.final_loss))}"
+        f"| Final loss | {_fmt(improved.final_loss)} | {_fmt(base.final_loss)} | {_fmt(_delta(improved.final_loss, base.final_loss))} |"
     )
     lines.append(
-        f"- Best accuracy: improved_version={_fmt(improved.best_accuracy)} (round {_fmt(improved.best_accuracy_round, 0)}) | baseline={_fmt(base.best_accuracy)} (round {_fmt(base.best_accuracy_round, 0)})"
+        f"| Best accuracy | {_fmt_with_round(improved.best_accuracy, improved.best_accuracy_round)} | {_fmt_with_round(base.best_accuracy, base.best_accuracy_round)} | {_fmt(_delta(improved.best_accuracy, base.best_accuracy))} |"
     )
     lines.append(
-        f"- Lowest loss: improved_version={_fmt(improved.lowest_loss)} (round {_fmt(improved.lowest_loss_round, 0)}) | baseline={_fmt(base.lowest_loss)} (round {_fmt(base.lowest_loss_round, 0)})"
+        f"| Lowest loss | {_fmt_with_round(improved.lowest_loss, improved.lowest_loss_round)} | {_fmt_with_round(base.lowest_loss, base.lowest_loss_round)} | {_fmt(_delta(improved.lowest_loss, base.lowest_loss))} |"
     )
     lines.append(
-        f"- Mean accuracy: improved_version={_fmt(improved.mean_accuracy)} | baseline={_fmt(base.mean_accuracy)} | delta={_fmt(_delta(improved.mean_accuracy, base.mean_accuracy))}"
+        f"| Mean accuracy | {_fmt(improved.mean_accuracy)} | {_fmt(base.mean_accuracy)} | {_fmt(_delta(improved.mean_accuracy, base.mean_accuracy))} |"
     )
 
     category_winners = {
@@ -200,7 +213,7 @@ def build_report(
         overall_winner = "n/a"
 
     lines.append("")
-    lines.append("Winners")
+    lines.append("## Winners")
     lines.append(f"- Final accuracy winner: {category_winners['final_accuracy']}")
     lines.append(f"- Final loss winner: {category_winners['final_loss']}")
     lines.append(f"- Best accuracy winner: {category_winners['best_accuracy']}")
@@ -216,17 +229,19 @@ def build_report(
     common_rounds = sorted(set(improved_map).intersection(base_map))
 
     lines.append("")
-    lines.append("Per-round deltas (improved_version - baseline)")
+    lines.append("## Per-round Deltas (improved_version - baseline)")
     if not common_rounds:
         lines.append("- No common rounds to compare")
     else:
-        lines.append("- round | acc_delta | loss_delta")
+        lines.append("| Round | Accuracy Delta | Loss Delta |")
+        lines.append("|---:|---:|---:|")
         for r in common_rounds:
             acc_d = _delta(improved_map[r]["accuracy"], base_map[r]["accuracy"])
             loss_d = _delta(improved_map[r]["loss"], base_map[r]["loss"])
-            lines.append(f"- {r} | {_fmt(acc_d)} | {_fmt(loss_d)}")
+            lines.append(f"| {r} | {_fmt(acc_d)} | {_fmt(loss_d)} |")
 
     report = {
+        "generated_at": generated_at,
         "improved_version": improved.__dict__,
         "baseline": base.__dict__,
         "common_rounds": common_rounds,
@@ -280,7 +295,8 @@ def main() -> None:
     improved_rows = _load_json(improved_path)
     baseline_rows = _load_json(baseline_path)
 
-    report_txt, report_obj = build_report(improved_rows, baseline_rows)
+    generated_at = datetime.now().astimezone().isoformat(timespec="seconds")
+    report_txt, report_obj = build_report(improved_rows, baseline_rows, generated_at)
     print(report_txt)
 
     if args.report_json:

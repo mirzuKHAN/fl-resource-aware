@@ -133,12 +133,12 @@ cp "${IMPROVED_RESULTS}" "${out_dir}/improved_version_results.json"
 cp "${BASELINE_RESULTS}" "${out_dir}/baseline_results.json"
 
 REPORT_JSON="${out_dir}/comparison_report.json"
-REPORT_TXT="${out_dir}/comparison_report.txt"
+REPORT_MD="${out_dir}/comparison_report.md"
 
 python "${REPO_ROOT}/scripts/compare_results.py" \
   --improved-version "${IMPROVED_RESULTS}" \
   --baseline "${BASELINE_RESULTS}" \
-  --report-json "${REPORT_JSON}" | tee "${REPORT_TXT}"
+  --report-json "${REPORT_JSON}" | tee "${REPORT_MD}"
 
 cat <<EOF
 
@@ -147,6 +147,6 @@ Done.
 - Baseline results: ${BASELINE_RESULTS}
 - Copied improved version results: ${out_dir}/improved_version_results.json
 - Copied baseline results: ${out_dir}/baseline_results.json
-- Comparison text report: ${REPORT_TXT}
+- Comparison Markdown report: ${REPORT_MD}
 - Comparison JSON report: ${REPORT_JSON}
 EOF
