@@ -37,9 +37,13 @@ By selecting the top-scoring clients, the strategy mitigates the impact of strag
 This project follows the standard Flower framework app structure:
 
 ```text
-├── pyproject.toml              # Project metadata and dependencies
+├── pyproject.toml              # Original improved_version app metadata
 ├── README.md                   # Project documentation
-└── pytorch_example/            # Core application code
+├── pytorch_example/            # Final strategy code (active)
+├── archive/
+│   └── tuned_parameter/        # Archived tuned-parameter app (historical)
+├── baseline/                   # Baseline app
+└── scripts/                    # Setup and comparison automation
     ├── __init__.py
     ├── client_app.py           # Client-side training and evaluation logic
     ├── server_app.py           # Server-side setup and hyperparameter configuration
@@ -76,7 +80,7 @@ pip install -e .
 For a new Ubuntu machine, use:
 
 ```bash
-chmod +x scripts/setup_ubuntu_fl.sh scripts/run_and_compare.sh
+chmod +x scripts/setup_ubuntu_fl.sh scripts/run_and_report_final.sh scripts/run_and_compare.sh scripts/run_and_compare_three.sh
 ./scripts/setup_ubuntu_fl.sh
 ```
 
@@ -85,20 +89,33 @@ This script will:
 - Create a virtual environment at `.venv`
 - Install all Python dependencies from both `pyproject.toml` files (main + baseline)
 
-### Automated run and comparison (improved_version vs baseline)
+### Automated final report run (final strategy vs baseline)
 
 After setup, run:
 
 ```bash
 source .venv/bin/activate
-./scripts/run_and_compare.sh --rounds 10
+./scripts/run_and_report_final.sh --rounds 10
 ```
 
 This automation script will:
-- Run Flower simulation for this project
-- Run Flower simulation for `baseline/`
+- Run Flower simulation for final strategy (`./`)
+- Run Flower simulation for baseline (`./baseline/`)
 - Find the newest `results.json` from each run
-- Call `scripts/compare_results.py` and generate reports under `comparison_runs/<timestamp>/`
+- Call `scripts/compare_final_results.py`
+- Generate final report artifacts under `comparison_runs/<timestamp>_final_strategy_vs_baseline/`
+
+Generated artifact names:
+- `final_strategy_vs_baseline_report.md`
+- `final_strategy_vs_baseline_report.json`
+- `final_vs_baseline_accuracy.png`
+- `final_vs_baseline_loss.png`
+
+Compatibility notes:
+- `scripts/run_and_compare.sh` now forwards to `scripts/run_and_report_final.sh`.
+- `scripts/run_and_compare_three.sh` now forwards to `scripts/run_and_report_final.sh`.
+- `scripts/compare_results.py` now forwards to `scripts/compare_final_results.py`.
+- Archived tuned app is stored at `archive/tuned_parameter/` and is not used in final report generation.
 
 ---
 
