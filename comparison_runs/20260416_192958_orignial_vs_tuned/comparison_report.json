@@ -1,0 +1,88 @@
+{
+  "generated_at": "2026-04-17T06:52:17+08:00",
+  "comparison_mode": "two_way",
+  "primary_metric": "best_accuracy",
+  "labels": {
+    "tuned": "tuned_parameter",
+    "original": "original_current_parameter"
+  },
+  "parameter_config": {
+    "tuned_parameter": {
+      "num-server-rounds": 10,
+      "fraction-train": 0.25,
+      "fraction-evaluate": 0.5,
+      "local-epochs": 1,
+      "server-device": "cpu",
+      "resource-score-alpha": 0.12,
+      "resource-score-beta": 0.83,
+      "resource-score-gamma": 0.05
+    },
+    "original_current_parameter": {
+      "num-server-rounds": 10,
+      "fraction-train": 0.25,
+      "fraction-evaluate": 0.5,
+      "local-epochs": 1,
+      "server-device": "cpu",
+      "resource-score-alpha": 0.4,
+      "resource-score-beta": 0.4,
+      "resource-score-gamma": 0.2
+    }
+  },
+  "variants": {
+    "tuned_parameter": {
+      "name": "tuned_parameter",
+      "rounds": 10,
+      "final_accuracy": 0.7711,
+      "best_accuracy": 0.7711,
+      "best_accuracy_round": 10,
+      "mean_accuracy": 0.72336,
+      "final_loss": 0.6010038125248381
+    },
+    "original_current_parameter": {
+      "name": "original_current_parameter",
+      "rounds": 10,
+      "final_accuracy": 0.7743,
+      "best_accuracy": 0.7743,
+      "best_accuracy_round": 10,
+      "mean_accuracy": 0.6892199999999999,
+      "final_loss": 0.5928407503773991
+    }
+  },
+  "common_rounds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "ranking": [
+    {
+      "rank": 1,
+      "name": "original_current_parameter",
+      "best_accuracy": 0.7743,
+      "best_accuracy_round": 10
+    },
+    {
+      "rank": 2,
+      "name": "tuned_parameter",
+      "best_accuracy": 0.7711,
+      "best_accuracy_round": 10
+    }
+  ],
+  "winner": {
+    "overall": "original_current_parameter",
+    "metric": "best_accuracy"
+  },
+  "delta_best_accuracy": {
+    "tuned_parameter_minus_original_current_parameter": -0.0031999999999999806
+  },
+  "plots": {
+    "accuracy": "comparison_accuracy.png",
+    "loss": "comparison_loss.png"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "generated_at": "2026-04-16T17:48:42+08:00",
+  "primary_metric": "best_accuracy",
+  "labels": {
+    "tuned": "tuned_parameter",
+    "original": "original_current_parameter",
+    "baseline": "baseline_reference"
+  },
+  "parameter_config": {
+    "tuned_parameter": {
+      "num-server-rounds": 10,
+      "fraction-train": 0.25,
+      "fraction-evaluate": 0.5,
+      "local-epochs": 1,
+      "server-device": "cpu",
+      "resource-score-alpha": 0.12,
+      "resource-score-beta": 0.83,
+      "resource-score-gamma": 0.05
+    },
+    "original_current_parameter": {
+      "num-server-rounds": 10,
+      "fraction-train": 0.25,
+      "fraction-evaluate": 0.5,
+      "local-epochs": 1,
+      "server-device": "cpu",
+      "resource-score-alpha": 0.4,
+      "resource-score-beta": 0.4,
+      "resource-score-gamma": 0.2
+    },
+    "baseline_reference": {
+      "num-server-rounds": 10,
+      "fraction-train": 0.25,
+      "fraction-evaluate": 0.5,
+      "local-epochs": 1,
+      "server-device": "cpu"
+    }
+  },
+  "variants": {
+    "tuned_parameter": {
+      "name": "tuned_parameter",
+      "rounds": 10,
+      "final_accuracy": 0.7767,
+      "best_accuracy": 0.785,
+      "best_accuracy_round": 9,
+      "mean_accuracy": 0.6929700000000001,
+      "final_loss": 0.584372230612051
+    },
+    "original_current_parameter": {
+      "name": "original_current_parameter",
+      "rounds": 10,
+      "final_accuracy": 0.6943,
+      "best_accuracy": 0.7226,
+      "best_accuracy_round": 9,
+      "mean_accuracy": 0.6468,
+      "final_loss": 0.8133944383444497
+    },
+    "baseline_reference": {
+      "name": "baseline_reference",
+      "rounds": 10,
+      "final_accuracy": 0.6946,
+      "best_accuracy": 0.6946,
+      "best_accuracy_round": 10,
+      "mean_accuracy": 0.5467,
+      "final_loss": 0.7725404400033311
+    }
+  },
+  "common_rounds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "ranking": [
+    {
+      "rank": 1,
+      "name": "tuned_parameter",
+      "best_accuracy": 0.785,
+      "best_accuracy_round": 9
+    },
+    {
+      "rank": 2,
+      "name": "original_current_parameter",
+      "best_accuracy": 0.7226,
+      "best_accuracy_round": 9
+    },
+    {
+      "rank": 3,
+      "name": "baseline_reference",
+      "best_accuracy": 0.6946,
+      "best_accuracy_round": 10
+    }
+  ],
+  "winner": {
+    "overall": "tuned_parameter",
+    "metric": "best_accuracy"
+  },
+  "delta_best_accuracy": {
+    "tuned_parameter_minus_original_current_parameter": 0.06240000000000001,
+    "tuned_parameter_minus_baseline_reference": 0.09040000000000004,
+    "original_current_parameter_minus_baseline_reference": 0.028000000000000025
+  },
+  "plots": {
+    "accuracy": "comparison_accuracy.png",
+    "loss": "comparison_loss.png"
+  }
+}

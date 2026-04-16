@@ -1,0 +1,78 @@
+{
+  "report_name": "final_strategy_vs_baseline_report",
+  "report_tag": "final_strategy_vs_baseline",
+  "generated_at": "2026-04-17T07:14:09+08:00",
+  "comparison_mode": "final_vs_baseline",
+  "primary_metric": "best_accuracy",
+  "labels": {
+    "final_strategy": "final_strategy",
+    "baseline": "baseline_reference"
+  },
+  "parameter_config": {
+    "final_strategy": {
+      "num-server-rounds": 1,
+      "fraction-train": 0.25,
+      "fraction-evaluate": 0.5,
+      "local-epochs": 1,
+      "server-device": "cpu",
+      "resource-score-alpha": 0.4,
+      "resource-score-beta": 0.4,
+      "resource-score-gamma": 0.2
+    },
+    "baseline_reference": {
+      "num-server-rounds": 1,
+      "fraction-train": 0.25,
+      "fraction-evaluate": 0.5,
+      "local-epochs": 1,
+      "server-device": "cpu"
+    }
+  },
+  "variants": {
+    "final_strategy": {
+      "name": "final_strategy",
+      "rounds": 1,
+      "final_accuracy": 0.4635,
+      "best_accuracy": 0.4635,
+      "best_accuracy_round": 1,
+      "mean_accuracy": 0.4635,
+      "final_loss": 1.2809195870789476
+    },
+    "baseline_reference": {
+      "name": "baseline_reference",
+      "rounds": 1,
+      "final_accuracy": 0.1001,
+      "best_accuracy": 0.1001,
+      "best_accuracy_round": 1,
+      "mean_accuracy": 0.1001,
+      "final_loss": 2.4695079593231886
+    }
+  },
+  "common_rounds": [
+    1
+  ],
+  "ranking": [
+    {
+      "rank": 1,
+      "name": "final_strategy",
+      "best_accuracy": 0.4635,
+      "best_accuracy_round": 1
+    },
+    {
+      "rank": 2,
+      "name": "baseline_reference",
+      "best_accuracy": 0.1001,
+      "best_accuracy_round": 1
+    }
+  ],
+  "winner": {
+    "overall": "final_strategy",
+    "metric": "best_accuracy"
+  },
+  "delta_best_accuracy": {
+    "final_strategy_minus_baseline_reference": 0.36340000000000006
+  },
+  "plots": {
+    "accuracy": "final_vs_baseline_accuracy.png",
+    "loss": "final_vs_baseline_loss.png"
+  }
+}

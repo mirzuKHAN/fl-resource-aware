@@ -1,0 +1,88 @@
+{
+  "generated_at": "2026-04-17T06:52:16+08:00",
+  "comparison_mode": "two_way",
+  "primary_metric": "best_accuracy",
+  "labels": {
+    "tuned": "tuned_parameter",
+    "original": "original_current_parameter"
+  },
+  "parameter_config": {
+    "tuned_parameter": {
+      "num-server-rounds": 10,
+      "fraction-train": 0.25,
+      "fraction-evaluate": 0.5,
+      "local-epochs": 1,
+      "server-device": "cpu",
+      "resource-score-alpha": 0.12,
+      "resource-score-beta": 0.83,
+      "resource-score-gamma": 0.05
+    },
+    "original_current_parameter": {
+      "num-server-rounds": 10,
+      "fraction-train": 0.25,
+      "fraction-evaluate": 0.5,
+      "local-epochs": 1,
+      "server-device": "cpu",
+      "resource-score-alpha": 0.4,
+      "resource-score-beta": 0.4,
+      "resource-score-gamma": 0.2
+    }
+  },
+  "variants": {
+    "tuned_parameter": {
+      "name": "tuned_parameter",
+      "rounds": 10,
+      "final_accuracy": 0.7804,
+      "best_accuracy": 0.783,
+      "best_accuracy_round": 8,
+      "mean_accuracy": 0.7335200000000001,
+      "final_loss": 0.5769908350591842
+    },
+    "original_current_parameter": {
+      "name": "original_current_parameter",
+      "rounds": 10,
+      "final_accuracy": 0.7279,
+      "best_accuracy": 0.7453,
+      "best_accuracy_round": 9,
+      "mean_accuracy": 0.6938,
+      "final_loss": 0.7158623217774657
+    }
+  },
+  "common_rounds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "ranking": [
+    {
+      "rank": 1,
+      "name": "tuned_parameter",
+      "best_accuracy": 0.783,
+      "best_accuracy_round": 8
+    },
+    {
+      "rank": 2,
+      "name": "original_current_parameter",
+      "best_accuracy": 0.7453,
+      "best_accuracy_round": 9
+    }
+  ],
+  "winner": {
+    "overall": "tuned_parameter",
+    "metric": "best_accuracy"
+  },
+  "delta_best_accuracy": {
+    "tuned_parameter_minus_original_current_parameter": 0.03770000000000007
+  },
+  "plots": {
+    "accuracy": "comparison_accuracy.png",
+    "loss": "comparison_loss.png"
+  }
+}
