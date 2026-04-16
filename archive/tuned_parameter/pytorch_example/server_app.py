@@ -21,15 +21,22 @@ def main(grid: Grid, context: Context) -> None:
     fraction_train = context.run_config["fraction-train"]
     fraction_eval = context.run_config["fraction-evaluate"]
     device = context.run_config["server-device"]
+    # Resource-score weights
+    alpha = context.run_config["resource-score-alpha"]
+    beta = context.run_config["resource-score-beta"]
+    gamma = context.run_config["resource-score-gamma"]
 
     # Load global model
     global_model = Net()
     arrays = ArrayRecord(global_model.state_dict())
 
-    # Initialize FedAvg strategy
+    # Initialize FedAvg strategy with resource-score client selection
     strategy = CustomFedAvg(
         fraction_train=fraction_train,
         fraction_evaluate=fraction_eval,
+        alpha=alpha,
+        beta=beta,
+        gamma=gamma,
     )
 
     # Define directory for results and save config
@@ -40,7 +47,7 @@ def main(grid: Grid, context: Context) -> None:
     result = strategy.start(
         grid=grid,
         initial_arrays=arrays,
-        train_config=ConfigRecord({"lr": 0.1}),
+        train_config=ConfigRecord({"lr": 0.01}),
         num_rounds=num_rounds,
         evaluate_fn=get_global_evaluate_fn(device=device),
     )

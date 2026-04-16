@@ -87,6 +87,7 @@ class CustomFedAvg(FedAvg):
         if server_round == 5:  # half LR at round 5
             config["lr"] = config["lr"] * 0.5
             logger.log(INFO, "⚙️ Adjusted learning rate to %f", config["lr"])
+
         # Continue with standard FedAvg configure_train
         return super().configure_train(server_round, arrays, config, grid)
 

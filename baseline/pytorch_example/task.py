@@ -112,7 +112,6 @@ def load_data(partition_id: int, num_partitions: int):
             num_partitions=num_partitions,
             partition_by="label",
             alpha=1.0,
-            seed=42,
         )
         fds = FederatedDataset(
             dataset="zalando-datasets/fashion_mnist",
@@ -120,12 +119,13 @@ def load_data(partition_id: int, num_partitions: int):
         )
     partition = fds.load_partition(partition_id)
     # Divide data on each node: 80% train, 20% test
-    partition_train_test = partition.train_test_split(test_size=0.2, seed=42)
+    partition_train_test = partition.train_test_split(test_size=0.2)
 
     train_partition = partition_train_test["train"].with_transform(
         apply_train_transforms
     )
     test_partition = partition_train_test["test"].with_transform(apply_eval_transforms)
+
     trainloader = DataLoader(train_partition, batch_size=32, shuffle=True)
     testloader = DataLoader(test_partition, batch_size=32)
     return trainloader, testloader

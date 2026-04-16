@@ -40,17 +40,9 @@ class CustomFedAvg(FedAvg):
 
     def __init__(
         self,
-        
-        # original parameters
-        # alpha: float = 0.4,
-        # beta: float = 0.4,
-        # gamma: float = 0.2,
-
-        # tuned parameters
         alpha: float = 0.12,
         beta: float = 0.83,
         gamma: float = 0.05,
-
         **kwargs,
     ) -> None:
         super().__init__(**kwargs)
