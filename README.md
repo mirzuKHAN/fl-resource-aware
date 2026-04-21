@@ -64,8 +64,8 @@ This project follows the standard Flower framework app structure:
 Clone the repository and install the dependencies in a virtual environment:
 
 ```bash
-git clone https://github.com/mirzuKHAN/fed-learn-resource-aware.git
-cd fed-learn-resource-aware
+git clone https://github.com/mirzuKHAN/fl-resource-aware.git
+cd fl-resource-aware
 
 # Create and activate a virtual environment
 python -m venv .venv
@@ -77,11 +77,12 @@ pip install -e .
 
 ### One-command setup for fresh Ubuntu
 
-For a new Ubuntu machine, use:
+For a new Ubuntu machine, use the follwing command:
 
 ```bash
-chmod +x scripts/setup_ubuntu_fl.sh scripts/run_and_report_final.sh scripts/run_and_compare.sh scripts/run_and_compare_three.sh
-./scripts/setup_ubuntu_fl.sh
+cd fl-resource-aware
+sudo chmod +x -R scripts/
+sudo ./scripts/setup_ubuntu_fl.sh
 ```
 
 This script will:
@@ -95,7 +96,7 @@ After setup, run:
 
 ```bash
 source .venv/bin/activate
-./scripts/run_and_report_final.sh --rounds 10
+sudo ./scripts/run_and_report_final.sh --rounds 10
 ```
 
 This automation script will:
@@ -143,4 +144,32 @@ Our evaluation demonstrates that the Resource-Aware selection prevents model div
 - The custom learning rate schedule and top-K node selection stabilized gradients.
 - Global accuracy climbed consistently across rounds, reaching over **66%** by Round 8 without training loss explosion.
 - The model actively ignored nodes with sub-10% battery or single-digit bandwidth speeds, proving the viability of the selection formula.
+
+---
+
+## 🧪 Artifact Appendix (Reproducibility)
+
+A complete project-wide artifact description and reproducibility guide is available in:
+
+- [ARTIFACT_APPENDIX.md](ARTIFACT_APPENDIX.md)
+
+This appendix includes:
+- Hardware/software requirements
+- Dataset/model details
+- Step-by-step installation and experiment workflow
+- Expected result ranges and allowable variation
+- Customization knobs for further experiments
+
+### Quick Reproduction Commands
+
+```bash
+chmod +x scripts/setup_ubuntu_fl.sh scripts/run_and_report_final.sh
+./scripts/setup_ubuntu_fl.sh --cpu-only
+source .venv/bin/activate
+./scripts/run_and_report_final.sh --rounds 10 --name artifact_eval
+```
+
+Expected generated report location pattern:
+
+- `comparison_runs/<timestamp>_artifact_eval/final_strategy_vs_baseline_report.md`
 
